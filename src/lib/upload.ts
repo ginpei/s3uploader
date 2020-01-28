@@ -72,6 +72,10 @@ async function walkThrough(
       return walkThrough(curDirPath, fileKey);
     }
 
+    if (path.extname(file) === '.zip') {
+      return [];
+    }
+
     const filePath = path.join(curDirPath, file);
     const props: FileProps = {
       filePath,
