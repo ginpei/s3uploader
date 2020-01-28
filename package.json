@@ -10,5 +10,9 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@types/node": "^13.5.0",
+    "colors": "^1.4.0"
   }
 }
