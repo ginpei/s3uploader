@@ -21,8 +21,8 @@ export async function extract(src: string, outDir: string): Promise<string[]> {
   return results;
 }
 
-export function extractTemp(src: string) {
+export function prepareTempDir() {
   const prefix = join(tmpdir(), 'ginpei-');
   const dir = mkdtempSync(prefix);
-  return extract(src, dir);
+  return dir;
 }

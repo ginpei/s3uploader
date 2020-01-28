@@ -12,7 +12,9 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "@types/node": "^13.5.0",
+    "aws-sdk": "^2.610.0",
     "colors": "^1.4.0"
   }
 }

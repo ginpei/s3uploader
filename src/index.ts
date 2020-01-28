@@ -1,22 +1,33 @@
 import { green } from 'colors/safe';
-import { extractTemp } from './lib/extract';
-import { uploadAll, UploadSettings } from './lib/upload';
+import { extract, prepareTempDir } from './lib/extract';
+import { uploadDir, UploadSettings } from './lib/upload';
 
 async function main() {
-  const settings = getAwsSettings();
+  const settings = getUploadSettings();
+  if (!settings) {
+    throw new Error('Failed to load settings');
+  }
+
   const zipPath = getTargetZipPath();
-  const filePaths = await extractTemp(zipPath);
-  await uploadAll(filePaths, settings);
+  if (!zipPath) {
+    throw new Error('No zip file is given');
+  }
+
+  const dir = prepareTempDir();
+  await extract(zipPath, dir);
+  await uploadDir(dir, settings);
   process.stdout.write(green('Done.\n'));
 }
 
 function getTargetZipPath() {
-  // return process.argv[2];
-  return '/mnt/c/Users/ginpei/Downloads/conde-2020-01-24/drive-download-20200128T051611Z-001.zip';
+  return process.argv[2];
 }
 
-function getAwsSettings(): UploadSettings {
-  return {};
+function getUploadSettings(): UploadSettings {
+  return {
+    bucket: 'ginpei.hey.yo',
+    keyPrefix: 's3uploader',
+  };
 }
 
 // eslint-disable-next-line no-console
