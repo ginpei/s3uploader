@@ -31,7 +31,7 @@ export async function upload(
   const p = req.promise();
   p.then(() => log('Uploaded.'));
   p.catch(() => log('Failed to upload.'));
-  return req.promise();
+  return p;
 }
 
 export async function uploadDir(
