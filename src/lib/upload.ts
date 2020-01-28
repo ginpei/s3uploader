@@ -44,10 +44,10 @@ export async function uploadDir(
 
   logUploading(firstProp, 0, length);
   let p = upload(firstProp.filePath, firstProp.fileKey, settings);
-  props.forEach(({ filePath, fileKey }, index) => {
+  props.forEach((prop, index) => {
     p = p.then(() => {
-      logUploading(firstProp, index + 1, length);
-      return upload(filePath, fileKey, settings);
+      logUploading(prop, index + 1, length);
+      return upload(prop.filePath, prop.fileKey, settings);
     });
   });
   return p;
