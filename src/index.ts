@@ -1,7 +1,8 @@
 import { green } from 'colors/safe';
 import { extract, prepareTempDir } from './lib/extract';
+import { getUploadSettings } from './lib/getUploadSettings';
 import { logError } from './lib/log';
-import { uploadDir, UploadSettings } from './lib/upload';
+import { uploadDir } from './lib/upload';
 
 async function main() {
   const settings = getUploadSettings();
@@ -22,13 +23,6 @@ async function main() {
 
 function getTargetZipPath() {
   return process.argv[2];
-}
-
-function getUploadSettings(): UploadSettings {
-  return {
-    bucket: 'ginpei.hey.yo',
-    keyPrefix: 's3uploader',
-  };
 }
 
 main().catch((error) => logError(error));
