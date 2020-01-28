@@ -1,7 +1,8 @@
-import fs from 'fs';
 import AWS from 'aws-sdk';
-import path from 'path';
 import { PutObjectRequest } from 'aws-sdk/clients/s3';
+import { grey } from 'colors/safe';
+import fs from 'fs';
+import path from 'path';
 import { log } from './log';
 
 const s3 = new AWS.S3();
@@ -26,12 +27,8 @@ export async function upload(
     Bucket: settings.bucket,
     Key: key,
   };
-  log('Uploading:', filePath);
   const req = s3.putObject(params);
-  const p = req.promise();
-  p.then(() => log('Uploaded.'));
-  p.catch(() => log('Failed to upload.'));
-  return p;
+  return req.promise();
 }
 
 export async function uploadDir(
@@ -43,9 +40,15 @@ export async function uploadDir(
     return Promise.resolve();
   }
 
+  const length = props.length + 1;
+
+  logUploading(firstProp, 0, length);
   let p = upload(firstProp.filePath, firstProp.fileKey, settings);
-  props.forEach(({ filePath, fileKey }) => {
-    p = p.then(() => upload(filePath, fileKey, settings));
+  props.forEach(({ filePath, fileKey }, index) => {
+    p = p.then(() => {
+      logUploading(firstProp, index + 1, length);
+      return upload(filePath, fileKey, settings);
+    });
   });
   return p;
 }
@@ -78,6 +81,10 @@ async function walkThrough(
   });
 
   return Promise.all(tasks).then((v) => flat(v));
+}
+
+function logUploading(props: FileProps, index: number, length: number) {
+  log(grey(`[${index + 1}/${length}]`), props.fileKey);
 }
 
 function flat<T>(arr: (T | T[])[]): T[] {
