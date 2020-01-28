@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { red } from 'colors';
+
 export function log(message: string, ...args: any[]) {
   console.log(message, ...args);
+}
+
+export function logError(error?: Error, ...args: any[]) {
+  console.error(red(error?.message || 'Unknown error'));
+  console.error(error, ...args);
 }

@@ -1,5 +1,6 @@
 import { green } from 'colors/safe';
 import { extract, prepareTempDir } from './lib/extract';
+import { logError } from './lib/log';
 import { uploadDir, UploadSettings } from './lib/upload';
 
 async function main() {
@@ -30,5 +31,4 @@ function getUploadSettings(): UploadSettings {
   };
 }
 
-// eslint-disable-next-line no-console
-main().catch((error) => console.error(error));
+main().catch((error) => logError(error));
